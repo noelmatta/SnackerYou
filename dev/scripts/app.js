@@ -115,7 +115,7 @@ class App extends React.Component {
 
                             lat: data.results[0].geometry.location.lat,
                             lon: data.results[0].geometry.location.lng,
-                            radius: '50',
+                            radius: '500',
 
                             sort: 'real_distance'
                         }
