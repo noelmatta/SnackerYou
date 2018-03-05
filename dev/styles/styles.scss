@@ -5,13 +5,17 @@
 @import 'infoWindow';
 
 .wrapper {
-    max-width: 1080px;
-    margin: 0 auto;
+    text-align: center;
+    width: 100%;
+    background-color: $orange;
+    label {
+        color: white;
+        font-size: 1.2rem;
+        font-weight: 900;
+    }
+}   
 
-}  
-#map {
-    // float:right;
-} 
+
 
 .infoPane {
     float:right;

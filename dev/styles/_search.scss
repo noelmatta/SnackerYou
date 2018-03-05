@@ -1,19 +1,24 @@
 form {
     font-family: $mainFont;
+    clear: both;
 }
 h1 {
     font-family:$headerFont;
 }
 
 input[type="submit"] {
-    border:0px;
-    padding:10px 65px;
+    border: 2px solid $orange;
+    padding:10px 35px;
     border-radius: 5px;
-    background:$grey;
-    
+    background: white;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: $orange;    
     // display:block;
     &:hover {
-           background:rgba(218, 217, 213, 0.6);
+        border: 2px solid white;
+        background: $orange;
+        color: white;
     }
 }
 
@@ -21,6 +26,9 @@ input[type="submit"] {
     border:0px;
     border-radius:5px;
     background:rgba(218, 217, 213, 0.4);
+    font-size: 1.1rem;
+    color: white;
+    font-weight: 700;
     padding: 10px 0 10px 15px;
     margin:25px;
 }
