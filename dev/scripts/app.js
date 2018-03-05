@@ -127,7 +127,9 @@ class App extends React.Component {
             <button className="authButton" onClick={this.signIn}>Sign in</button>
             <button className="authButton" onClick={this.signOut}>Sign Out</button>
             {/* <Auth /> */}
-            <MapContainer locations={this.state.restaurants} coords={this.state.coordinates} />
+            <div id="map"><MapContainer locations={this.state.restaurants} coords={this.state.coordinates} />
+            
+            </div>
           </div>;
 
     }
