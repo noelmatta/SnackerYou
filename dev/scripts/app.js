@@ -21,55 +21,14 @@ class App extends React.Component {
         super(props);
         this.state = {
             userText: '',
-            restaurants: []
+            restaurants: [],
+            coordinates: {}
         }
         this.signIn = this.signIn.bind(this);
         this.signOut = this.signOut.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.submit = this.submit.bind(this);
-        this.zomatoSearch = this.zomatoSearch.bind(this);
         this.getCoords = this.getCoords.bind(this);
-    }
-    zomatoSearch(lat, lon) {
-        axios
-            .get(`https://developers.zomato.com/api/v2.1/search`, {
-                headers: {
-                    "user-key": `53314a8415a07eafa4656461b1c6272d`
-                },
-                params: {
-                    // q: 'toronto'      
-
-                    'lat': lat,
-                    'lon': lon,
-                    radius: '50',
-
-                    sort: 'real_distance'
-                }
-            })
-            .then(({ data }) => {
-                console.log(data);
-                // const restRes = data.restaurants[4].restaurant.name;
-                // // console.log(restRes);
-                // const restAdd = data.restaurants[4].restaurant.location.address;
-
-                // const newList = {
-
-                // };
-
-                const newArray = Array.from(this.state.restaurants);
-
-                data.restaurants.forEach(eatingPlace => {
-                    // console.log(eatingPlace.restaurant.name);
-                    // console.log(eatingPlace.restaurant.location.address);
-
-                    const restObj = { name: eatingPlace.restaurant.name, address: eatingPlace.restaurant.location.address };
-                    newArray.push(restObj);
-                });
-
-                console.log(newArray);
-
-                this.setState({ restaurants: newArray });
-            });
     }
     signIn(e) {
         const provider = new firebase.auth.GoogleAuthProvider();
@@ -94,7 +53,6 @@ class App extends React.Component {
         })
     }
     getCoords(address) {
-        console.log(address);
         axios
             .get(`${googleURL}`, {
                 params: {
@@ -104,7 +62,7 @@ class App extends React.Component {
             })
             .then(({ data }) => {
                 // console.log(data.results[0].geometry.location.lat);
-                console.log(data.results[0].geometry.location.lng);
+                // console.log(data.results[0].geometry.location.lng);
                 axios
                     .get(`https://developers.zomato.com/api/v2.1/search`, {
                         headers: {
@@ -120,7 +78,6 @@ class App extends React.Component {
                             sort: 'real_distance'
                         }
                     }).then((response) => {
-                        console.log(response.data.restaurants);
                         let newArray = Array.from(this.state.restaurants);
 
                         newArray = response.data.restaurants.map(eatingPlace => {
@@ -138,8 +95,13 @@ class App extends React.Component {
                         this.setState({
                             restaurants: newArray,
                             lat: data.results[0].geometry.location.lat,
-                            lon: data.results[0].geometry.location.lng
+                            lon: data.results[0].geometry.location.lng,
+                            coordinates: {
+                                lat: data.results[0].geometry.location.lat,
+                                lng: data.results[0].geometry.location.lng
+                            }
                         });
+
                     });
             });
     }
@@ -149,24 +111,25 @@ class App extends React.Component {
         const inputResult = this.state.userText;
         const coords = {};
 
-        this.getCoords(inputResult)
+        this.getCoords(inputResult);
         // this.zomatoSearch(this.state.lat, this.state.lon);
     }
     render() {
-        return (
-            <div>
-                <form onSubmit={this.submit}>
-                    <input type="text" id="userText" value={this.state.userText} onChange={this.handleChange} onSubmit={this.submitTest} />
-                    <label htmlFor="userSearch">Type City or Address</label>
-                    <input type="submit" value="submit" onSubmit={this.submitTest} />
-                </form>
 
-                <button onClick={this.signIn}>Sign in</button>
-                <button onClick={this.signOut}>Sign Out</button>
-                {/* <Auth /> */}
-                <MapContainer locations={this.state.restaurants} />
-            </div>
-        )
+        return <div>
+            <form onSubmit={this.submit} className="wrapper">
+            <h1>snackerYou</h1>
+              <label htmlFor="userSearch">Type City or Address</label>
+              <input type="text" id="userText" value={this.state.userText} onChange={this.handleChange} />
+              <input type="submit" value="submit" />
+            </form>
+
+            <button className="authButton" onClick={this.signIn}>Sign in</button>
+            <button className="authButton" onClick={this.signOut}>Sign Out</button>
+            {/* <Auth /> */}
+            <MapContainer locations={this.state.restaurants} coords={this.state.coordinates} />
+          </div>;
+
     }
 }
 
