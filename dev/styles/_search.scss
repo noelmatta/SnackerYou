@@ -1,0 +1,26 @@
+form {
+    font-family: $mainFont;
+}
+h1 {
+    font-family:$headerFont;
+}
+
+input[type="submit"] {
+    border:0px;
+    padding:10px 65px;
+    border-radius: 5px;
+    background:$grey;
+    
+    // display:block;
+    &:hover {
+           background:rgba(218, 217, 213, 0.6);
+    }
+}
+
+#userText {
+    border:0px;
+    border-radius:5px;
+    background:rgba(218, 217, 213, 0.4);
+    padding: 10px 0 10px 15px;
+    margin:25px;
+}

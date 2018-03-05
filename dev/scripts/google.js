@@ -47,9 +47,9 @@ export class MapContainer extends React.Component {
                 })}
                 <InfoWindow marker={this.state.activeMarker} onClose={this.onInfoWindowClose} visible={this.state.showingInfoWindow}>
                     <div className="results">
-                        <h1>{this.state.title}</h1>
-                        <h2>{this.state.address}</h2>
-                        <button>Save</button>
+                        <h2>{this.state.title}</h2>
+                        <p className="locationAddress">{this.state.address}</p>
+                        <button className="save">Save</button>
                     </div>
                 </InfoWindow>
 

@@ -115,20 +115,21 @@ class App extends React.Component {
         // this.zomatoSearch(this.state.lat, this.state.lon);
     }
     render() {
-        return (
-            <div>
-                <form onSubmit={this.submit}>
-                    <input type="text" id="userText" value={this.state.userText} onChange={this.handleChange} />
-                    <label htmlFor="userSearch">Type City or Address</label>
-                    <input type="submit" value="submit" />
-                </form>
 
-                <button onClick={this.signIn}>Sign in</button>
-                <button onClick={this.signOut}>Sign Out</button>
-                {/* <Auth /> */}
-                <MapContainer locations={this.state.restaurants} coords={this.state.coordinates} />
-            </div>
-        )
+        return <div>
+            <form onSubmit={this.submit} className="wrapper">
+            <h1>snackerYou</h1>
+              <label htmlFor="userSearch">Type City or Address</label>
+              <input type="text" id="userText" value={this.state.userText} onChange={this.handleChange} />
+              <input type="submit" value="submit" />
+            </form>
+
+            <button className="authButton" onClick={this.signIn}>Sign in</button>
+            <button className="authButton" onClick={this.signOut}>Sign Out</button>
+            {/* <Auth /> */}
+            <MapContainer locations={this.state.restaurants} coords={this.state.coordinates} />
+          </div>;
+
     }
 }
 
