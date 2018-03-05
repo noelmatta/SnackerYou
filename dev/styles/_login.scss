@@ -1,14 +1,22 @@
 .authButton {
-    border-radius:5px;
-    background: white;
-    border:1px solid $beige;
-    font-family:$mainFont;
+    border-radius: 15px;
+    background-color: $orange;
+    color: white;
+    border:3px solid $grey;
+    font-weight: 700;
+    font-family: $mainFont;
     text-transform: uppercase;
-    padding: 10px 50px;
+    padding: 10px 30px;
     max-width:200px;
     width:100%;
     display:block;
+    float: left;
     &:hover {
-        border:1px solid $mediumBrown;
+        border:1px solid $dark;
     }
+}
+
+.signOut {
+    width: 40%;
+    float: left;
 }

@@ -36,17 +36,14 @@ class App extends React.Component {
         provider.setCustomParameters({
             prompt: 'select_account'
         })
-
         firebase.auth().signInWithPopup(provider)
             .then((user) => {
                 console.log(user);
             })
     }
-
     signOut(e) {
         firebase.auth().signOut();
     }
-
     handleChange(e) {
         this.setState({
             [e.target.id]: e.target.value
@@ -61,29 +58,21 @@ class App extends React.Component {
                 }
             })
             .then(({ data }) => {
-                // console.log(data.results[0].geometry.location.lat);
-                // console.log(data.results[0].geometry.location.lng);
                 axios
                     .get(`https://developers.zomato.com/api/v2.1/search`, {
                         headers: {
                             "user-key": `53314a8415a07eafa4656461b1c6272d`
                         },
                         params: {
-                            // q: 'toronto'      
-
                             lat: data.results[0].geometry.location.lat,
                             lon: data.results[0].geometry.location.lng,
                             radius: '500',
-
                             sort: 'real_distance'
                         }
                     }).then((response) => {
                         let newArray = Array.from(this.state.restaurants);
 
                         newArray = response.data.restaurants.map(eatingPlace => {
-                            // console.log(eatingPlace.restaurant.name);
-                            // console.log(eatingPlace.restaurant.location.address);
-
                             return {
                                 name: eatingPlace.restaurant.name,
                                 address: eatingPlace.restaurant.location.address,
@@ -101,37 +90,39 @@ class App extends React.Component {
                                 lng: data.results[0].geometry.location.lng
                             }
                         });
-
                     });
             });
     }
     submit(e) {
         e.preventDefault();
-        // const inputResult = `googlecall.com/v1/?query=${inputValue}`
+
         const inputResult = this.state.userText;
         const coords = {};
 
         this.getCoords(inputResult);
-        // this.zomatoSearch(this.state.lat, this.state.lon);
     }
     render() {
 
-        return <div>
-            <form onSubmit={this.submit} className="wrapper">
-            <h1>snackerYou</h1>
-              <label htmlFor="userSearch">Type City or Address</label>
-              <input type="text" id="userText" value={this.state.userText} onChange={this.handleChange} />
-              <input type="submit" value="submit" />
-            </form>
+        return (
+            <div>
+                <div className="logo">
+                    <img src="./public/images/fullLogo.png" />
+                </div>
+                <div className="signOut">
+                    <button className="authButton" onClick={this.signIn}>Sign in</button>
+                    <button className="authButton" onClick={this.signOut}>Sign Out</button>
+                </div>
+                <form onSubmit={this.submit} className="wrapper">
+                    <label htmlFor="userSearch">City or Address:</label>
+                    <input type="text" id="userText" value={this.state.userText} onChange={this.handleChange} />
+                    <input type="submit" value="Food Me!" />
+                </form>
 
-            <button className="authButton" onClick={this.signIn}>Sign in</button>
-            <button className="authButton" onClick={this.signOut}>Sign Out</button>
-            {/* <Auth /> */}
-            <div id="map"><MapContainer locations={this.state.restaurants} coords={this.state.coordinates} />
-            
+                <div id="map" className="map">
+                    <MapContainer locations={this.state.restaurants} coords={this.state.coordinates} />
+                </div>
             </div>
-          </div>;
-
+        )
     }
 }
 
