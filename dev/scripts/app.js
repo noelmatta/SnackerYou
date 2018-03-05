@@ -74,7 +74,6 @@ class App extends React.Component {
                             lat: data.results[0].geometry.location.lat,
                             lon: data.results[0].geometry.location.lng,
                             radius: '500',
-
                             sort: 'real_distance'
                         }
                     }).then((response) => {
@@ -82,15 +81,16 @@ class App extends React.Component {
 
                         newArray = response.data.restaurants.map(eatingPlace => {
                             // console.log(eatingPlace.restaurant.name);
-                            // console.log(eatingPlace.restaurant.location.address);
-
+                            
                             return {
                                 name: eatingPlace.restaurant.name,
                                 address: eatingPlace.restaurant.location.address,
                                 latitude: eatingPlace.restaurant.location.latitude,
-                                longitude: eatingPlace.restaurant.location.longitude
+                                longitude: eatingPlace.restaurant.location.longitude,
+                                rating: eatingPlace.restaurant.user_rating.aggregate_rating
                             };
                         });
+                        console.log(newArray);
 
                         this.setState({
                             restaurants: newArray,
