@@ -16,6 +16,7 @@ export class MapContainer extends React.Component {
         
         this.markerClick = this.markerClick.bind(this);
         this.onMapClicked = this.onMapClicked.bind(this);
+        this.clickThis = this.clickThis.bind(this);
 
     }
     markerClick(props, marker) {
@@ -29,6 +30,15 @@ export class MapContainer extends React.Component {
         })
 
     }
+
+    clickThis(){
+        
+        const userSave = {
+            restaurant: this.state.title,
+            address: this.state.address
+        }
+        console.log(userSave);
+    }
     onMapClicked(props) {
         if (this.state.showingInfoWindow) {
             this.setState({
@@ -37,24 +47,44 @@ export class MapContainer extends React.Component {
             })
         }
     }
+
     render(props) {
         // centerAroundCurrentLocation={true} 
-        return (
+        return <div>
+            <div>
+              <h5>{this.state.title}</h5>
+              <p>{this.state.address}</p>
+              <button onClick={this.clickThis}>CLICK CLICK</button>
+            </div>
             <Map google={this.props.google} zoom={13} onClick={this.onMapClicked} center={this.props.coords}>
-                {Object.values(this.props.locations).map((location, i) => {
-                    return <Marker name={'Toronto'} title={location.name} address={location.address} position={{ lat: location.latitude, lng: location.longitude }} onClick={this.markerClick}
-                        name={'Current location'} key={i} />
-                })}
-                <InfoWindow marker={this.state.activeMarker} onClose={this.onInfoWindowClose} visible={this.state.showingInfoWindow}>
-                    <div className="results">
-                        <h2>{this.state.title}</h2>
-                        <p className="locationAddress">{this.state.address}</p>
-                        <button className="save">Save</button>
-                    </div>
-                </InfoWindow>
-
+              {Object.values(this.props.locations).map(
+                (location, i) => {
+                  return (
+                    <Marker
+                      name={"Toronto"}
+                      title={location.name}
+                      address={location.address}
+                      position={{
+                        lat: location.latitude,
+                        lng: location.longitude
+                      }}
+                      onClick={this.markerClick}
+                      name={"Current location"}
+                      key={i}
+                    />
+                  );
+                }
+              )}
+              <InfoWindow marker={this.state.activeMarker} onClose={this.onInfoWindowClose} visible={this.state.showingInfoWindow}>
+                <div className="results">
+                  <h2>{this.state.title}</h2>
+                  <p className="locationAddress">
+                    {this.state.address}
+                  </p>
+                </div>
+              </InfoWindow>
             </Map>
-        );
+          </div>;
     }
 }
 
