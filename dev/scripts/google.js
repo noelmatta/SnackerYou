@@ -11,13 +11,24 @@ export class MapContainer extends React.Component {
             address: '',
             showingInfoWindow: false,
             selectedPlace: {},
-            activeMarker: {}
+            activeMarker: {},
+            loggedIn: false
         }
         
         this.markerClick = this.markerClick.bind(this);
         this.onMapClicked = this.onMapClicked.bind(this);
         this.clickThis = this.clickThis.bind(this);
-
+    }
+    componentDidMount() {
+        firebase.auth().onAuthStateChanged((res) => {
+            if(res) {
+                this.setState({
+                    loggedIn: true
+                })
+            } else {
+                loggedIn: false
+            }
+        })
     }
     markerClick(props, marker) {
         console.log(props);
@@ -30,14 +41,16 @@ export class MapContainer extends React.Component {
         })
  
     }
-
     clickThis(){
         
         const userSave = {
             restaurant: this.state.title,
             address: this.state.address
         }
-        console.log(userSave);
+        // console.log(userSave);
+
+        const dbRef = firebase.database().ref('/restaurants');
+        dbRef.push(userSave);
     }
     onMapClicked(props) {
         if (this.state.showingInfoWindow) {
