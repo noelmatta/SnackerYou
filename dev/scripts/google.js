@@ -26,7 +26,7 @@ export class MapContainer extends React.Component {
             address: props.address
 
         })
-
+ 
     }
     onMapClicked(props) {
         if (this.state.showingInfoWindow) {
