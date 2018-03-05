@@ -124,6 +124,7 @@ class App extends React.Component {
                 <div id="map" className="map">
                     <MapContainer locations={this.state.restaurants} coords={this.state.coordinates} />
                 </div>
+
             </div>
         )
     }
