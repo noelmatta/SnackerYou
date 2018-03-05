@@ -60,7 +60,7 @@ class Auth extends React.Component {
         }
       })
       .then(({ data }) => {
-        console.log(data);
+        // console.log(data);
         // const restRes = data.restaurants[4].restaurant.name;
         // // console.log(restRes);
         // const restAdd = data.restaurants[4].restaurant.location.address;
@@ -75,7 +75,11 @@ class Auth extends React.Component {
           // console.log(eatingPlace.restaurant.name);
           // console.log(eatingPlace.restaurant.location.address);
 
-          const restObj = { name: eatingPlace.restaurant.name, address: eatingPlace.restaurant.location.address };
+          const restObj = { 
+              name: eatingPlace.restaurant.name, 
+              address: eatingPlace.restaurant.location.address,
+              photo: eatingPlace.restaurant.photos_url
+             };
           newArray.push(restObj);
         });
 
@@ -153,12 +157,7 @@ class Auth extends React.Component {
                             // console.log(eatingPlace.restaurant.name);
                             // console.log(eatingPlace.restaurant.location.address);
 
-                            return { 
-                                name: eatingPlace.restaurant.name, 
-                                address: eatingPlace.restaurant.location.address,
-                                lat: eatingPlace.restaurant.location.latitude,
-                                lon: eatingPlace.restaurant.location.longitude
-                            };
+                            return { name: eatingPlace.restaurant.name, address: eatingPlace.restaurant.location.address, lat: eatingPlace.restaurant.location.latitude, lon: eatingPlace.restaurant.location.longitude, photo: eatingPlace.restaurant.photos_url };
                         });
                         
                         this.setState({
@@ -189,9 +188,9 @@ class Auth extends React.Component {
         <div>
 
             <form onSubmit={this.submit}>
-                 <input type="text" id="userText" value={this.state.userText} onChange={this.handleChange} onSubmit={this.submitTest} />
                  <label htmlFor="userSearch">Type City or Address</label>
                  <input type="submit" value="submit" onSubmit={this.submitTest} />
+                 <input type="text" id="userText" value={this.state.userText} onChange={this.handleChange} onSubmit={this.submitTest} />
             </form>
       
             <button onClick={this.signIn}>Sign in</button>
