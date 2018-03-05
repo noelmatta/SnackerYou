@@ -13,6 +13,7 @@ export class MapContainer extends React.Component {
             selectedPlace: {},
             activeMarker: {}
         }
+        
         this.markerClick = this.markerClick.bind(this);
         this.onMapClicked = this.onMapClicked.bind(this);
 
@@ -35,16 +36,15 @@ export class MapContainer extends React.Component {
                 activeMarker: null,
             })
         }
-        console.log('hey');
     }
     render(props) {
+        // centerAroundCurrentLocation={true} 
         return (
-            <Map google={this.props.google} zoom={13} centerAroundCurrentLocation={true}>
+            <Map google={this.props.google} zoom={13} onClick={this.onMapClicked} center={this.props.coords}>
                 {Object.values(this.props.locations).map((location, i) => {
                     return <Marker name={'Toronto'} title={location.name} address={location.address} position={{ lat: location.latitude, lng: location.longitude }} onClick={this.markerClick}
                         name={'Current location'} key={i} />
                 })}
-
                 <InfoWindow marker={this.state.activeMarker} onClose={this.onInfoWindowClose} visible={this.state.showingInfoWindow}>
                     <div className="results">
                         <h1>{this.state.title}</h1>
