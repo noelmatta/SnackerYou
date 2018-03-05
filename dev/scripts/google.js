@@ -37,7 +37,7 @@ export class MapContainer extends React.Component {
             title: props.title,
             activeMarker: marker,
             address: props.address
-
+            
         })
  
     }
