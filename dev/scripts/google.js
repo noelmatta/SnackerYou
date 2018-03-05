@@ -9,6 +9,7 @@ export class MapContainer extends React.Component {
         this.state = {
             title: '',
             address: '',
+            rating:'',
             showingInfoWindow: false,
             selectedPlace: {},
             activeMarker: {},
@@ -36,8 +37,10 @@ export class MapContainer extends React.Component {
             showingInfoWindow: true,
             title: props.title,
             activeMarker: marker,
-            address: props.address
-            
+            address: props.address,
+            rating: props.rating
+
+
         })
  
     }
@@ -45,7 +48,8 @@ export class MapContainer extends React.Component {
         
         const userSave = {
             restaurant: this.state.title,
-            address: this.state.address
+            address: this.state.address,
+            rating: this.state.rating
         }
         // console.log(userSave);
 
@@ -62,14 +66,19 @@ export class MapContainer extends React.Component {
     }
 
     render(props) {
+        const style = {
+            width:'70%',
+            height:'80%'
+        }
         // centerAroundCurrentLocation={true} 
         return <div>
-            <div>
+            <div className="infoPane">
               <h5>{this.state.title}</h5>
               <p>{this.state.address}</p>
+              <span>{this.state.rating}</span>
               <button onClick={this.clickThis}>CLICK CLICK</button>
             </div>
-            <Map google={this.props.google} zoom={13} onClick={this.onMapClicked} center={this.props.coords}>
+            <Map google={this.props.google} zoom={13} onClick={this.onMapClicked} center={this.props.coords} style={style}>
               {Object.values(this.props.locations).map(
                 (location, i) => {
                   return (
