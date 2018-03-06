@@ -13,7 +13,8 @@ export class MapContainer extends React.Component {
             showingInfoWindow: false,
             selectedPlace: {},
             activeMarker: {},
-            loggedIn: false
+            loggedIn: false,
+            savedRestaurants: props.userHistory
         }
         
         this.markerClick = this.markerClick.bind(this);
@@ -21,42 +22,43 @@ export class MapContainer extends React.Component {
         this.clickThis = this.clickThis.bind(this);
         
     }
-    // componentDidMount() {
-        
-        // firebase.auth().onAuthStateChanged((res) => {
-        //     if(res) {
-        //         this.setState({
-        //             loggedIn: true
-        //         })
-        //     } else {
-        //         loggedIn: false
-        //     }
-        // })
-    // }
+
+ 
+    componentWillReceiveProps(props) {
+        // console.log(this.props.userHistory)
+        console.log(props)
+        let restaurantHistory = props.userHistory
+        this.setState({
+            savedRestaurants: restaurantHistory
+        })
+    }
     markerClick(props, marker) {
-        // console.log(props);
+
         this.setState({
             showingInfoWindow: true,
             title: props.title,
             activeMarker: marker,
+
             address: props.address,
-            // rating: props.rating
+
+           
 
 
         })
  
     }
     clickThis(){
-        // console.log('teststestse')
+
+        
         const userSave = {
             restaurant: this.state.title,
             address: this.state.address,
-            // rating: this.state.rating
+
+        
         }
-        // console.log(userSave);
 
         const dbRef = firebase.database().ref('/restaurants');
-        dbRef.push(userSave);
+        dbRef.push(userSave);     
     }
     componentDidMount() {
         const dbRef = firebase.database().ref('/restaurants');
@@ -91,9 +93,15 @@ export class MapContainer extends React.Component {
             width:'70%',
             height:'80%'
         }
-        // centerAroundCurrentLocation={true} 
-        return (<div>
+        return (<div className="rightColumn">
             <div className="infoPane">
+
+                {this.state.savedRestaurants.map((restaurant) => {
+console.log(restaurant.address);
+                    console.log(restaurant.key);
+                    console.log(restaurant.restaurant);
+                })}
+
               <h5>{this.state.title}</h5>
               <p>{this.state.address}</p>
               {/* <span>{this.state.rating}</span> */}
