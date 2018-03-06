@@ -20,7 +20,10 @@ export class MapContainer extends React.Component {
         this.markerClick = this.markerClick.bind(this);
         this.onMapClicked = this.onMapClicked.bind(this);
         this.clickThis = this.clickThis.bind(this);
+        
     }
+
+ 
     componentWillReceiveProps(props) {
         // console.log(this.props.userHistory)
         console.log(props)
@@ -30,27 +33,52 @@ export class MapContainer extends React.Component {
         })
     }
     markerClick(props, marker) {
+
         this.setState({
             showingInfoWindow: true,
             title: props.title,
             activeMarker: marker,
-            address: props.address
-            // rating: props.rating
+
+            address: props.address,
+
+           
 
 
         })
  
     }
     clickThis(){
+
+        
         const userSave = {
             restaurant: this.state.title,
-            address: this.state.address
-            // rating: this.state.rating
+            address: this.state.address,
+
+        
         }
 
         const dbRef = firebase.database().ref('/restaurants');
         dbRef.push(userSave);     
     }
+    componentDidMount() {
+        const dbRef = firebase.database().ref('/restaurants');
+        dbRef.on('value', (snapshot)=>{
+            let items = snapshot.val();
+            let newState = [];
+            for (let item in items) {
+                newState.push({
+                    id: item,
+                    title: items[item].title,
+                    address: items[item].address
+                });
+            }
+            this.setState({
+                places:newState
+            });
+            console.log(items);
+        });
+    }
+
     onMapClicked(props) {
         if (this.state.showingInfoWindow) {
             this.setState({
@@ -79,6 +107,13 @@ console.log(restaurant.address);
               {/* <span>{this.state.rating}</span> */}
               <button onClick={this.clickThis}>CLICK CLICK</button>
             </div>
+            <section className="saved">
+                <div className="wrapper">
+                
+
+                </div>
+            </section>
+            
             <Map google={this.props.google} zoom={13} onClick={this.onMapClicked} center={this.props.coords} style={style}>
               {Object.values(this.props.locations).map(
                 (location, i) => {
