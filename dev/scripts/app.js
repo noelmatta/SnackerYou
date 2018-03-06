@@ -15,6 +15,8 @@ var config = {
     messagingSenderId: "351310641968"
 };
 firebase.initializeApp(config);
+const provider = new firebase.auth.GoogleAuthProvider();
+const auth = firebase.auth();
 
 class App extends React.Component {
     constructor(props) {
@@ -22,7 +24,9 @@ class App extends React.Component {
         this.state = {
             userText: '',
             restaurants: [],
-            coordinates: {}
+            coordinates: {},
+            username: '',
+            user: null
         }
         this.signIn = this.signIn.bind(this);
         this.signOut = this.signOut.bind(this);
@@ -30,24 +34,49 @@ class App extends React.Component {
         this.submit = this.submit.bind(this);
         this.getCoords = this.getCoords.bind(this);
     }
-    signIn(e) {
-        const provider = new firebase.auth.GoogleAuthProvider();
+    signIn() {
 
-        provider.setCustomParameters({
-            prompt: 'select_account'
-        })
-        firebase.auth().signInWithPopup(provider)
-            .then((user) => {
-                console.log(user);
+        auth.signInWithPopup(provider)
+        .then((result) => {
+            const user = result.user;
+            this.setState ({
+                user
             })
+        })
+        // const provider = new firebase.auth.GoogleAuthProvider();
+
+        // provider.setCustomParameters({
+        //     prompt: 'select_account'
+        // })
+        // firebase.auth().signInWithPopup(provider)
+        //     .then((user) => {
+        //         console.log(user);
+        //         const user = result.user;
+        //         this.setState ({
+        //             user
+        //         })
+        //     })
     }
-    signOut(e) {
-        firebase.auth().signOut();
+    signOut() {
+        auth.signOut()
+        .then(()=> {
+            this.setState({
+                user:null
+            });
+        });
+        // firebase.auth().signOut();
     }
     handleChange(e) {
         this.setState({
             [e.target.id]: e.target.value
         })
+    }
+    componentDidMount () {
+        auth.onAuthStateChanged((user) =>{
+            if(user) {
+                this.setState({user})
+            }
+        });
     }
     getCoords(address) {
         axios
@@ -82,7 +111,7 @@ class App extends React.Component {
                                 rating: eatingPlace.restaurant.user_rating.aggregate_rating
                             };
                         });
-                        console.log(newArray);
+                        // console.log(newArray);
 
                         this.setState({
                             restaurants: newArray,
@@ -106,27 +135,33 @@ class App extends React.Component {
     }
     render() {
 
-        return (
-            <div>
-                <div className="logo">
-                    <img src="./public/images/fullLogo.png" />
-                </div>
-                <div className="signOut">
-                    <button className="authButton" onClick={this.signIn}>Sign in</button>
-                    <button className="authButton" onClick={this.signOut}>Sign Out</button>
-                </div>
-                <form onSubmit={this.submit} className="wrapper">
+        return <div>
+            <div className="logo">
+              <img src="./public/images/fullLogo.png" />
+            </div>
+            <div className="signOut">
+              {this.state.user ? <button className="authButton" onClick={this.signOut}>
+                  Sign Out
+                </button> : <button className="authButton" onClick={this.signIn}>
+                  Sign in
+                </button>}
+            </div>
+            {this.state.user ? <div>
+                <div className="userStuff">
+                  <form onSubmit={this.submit} className="wrapper">
                     <label htmlFor="userSearch">City or Address:</label>
                     <input type="text" id="userText" value={this.state.userText} onChange={this.handleChange} />
                     <input type="submit" value="Food Me!" />
-                </form>
+                  </form>
 
-                <div id="map" className="map">
+                  <div id="map" className="map">
                     <MapContainer locations={this.state.restaurants} coords={this.state.coordinates} />
+                  </div>    
                 </div>
-
-            </div>
-        )
+              </div> : <div className="wrapper">
+                <p>you must be logged in</p>
+              </div>}
+          </div>;
     }
 }
 
