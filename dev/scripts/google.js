@@ -8,7 +8,7 @@ export class MapContainer extends React.Component {
         super(props);
         this.state = {
             title: '',
-            rating:'',
+            // rating:'',
             address: '',
             showingInfoWindow: false,
             selectedPlace: {},
@@ -19,8 +19,10 @@ export class MapContainer extends React.Component {
         this.markerClick = this.markerClick.bind(this);
         this.onMapClicked = this.onMapClicked.bind(this);
         this.clickThis = this.clickThis.bind(this);
+        
     }
-    componentDidMount() {
+    // componentDidMount() {
+        
         // firebase.auth().onAuthStateChanged((res) => {
         //     if(res) {
         //         this.setState({
@@ -30,32 +32,51 @@ export class MapContainer extends React.Component {
         //         loggedIn: false
         //     }
         // })
-    }
+    // }
     markerClick(props, marker) {
-        console.log(props);
+        // console.log(props);
         this.setState({
             showingInfoWindow: true,
             title: props.title,
             activeMarker: marker,
             address: props.address,
-            rating: props.rating
+            // rating: props.rating
 
 
         })
  
     }
     clickThis(){
-        console.log('teststestse')
+        // console.log('teststestse')
         const userSave = {
             restaurant: this.state.title,
             address: this.state.address,
-            rating: this.state.rating
+            // rating: this.state.rating
         }
         // console.log(userSave);
 
         const dbRef = firebase.database().ref('/restaurants');
         dbRef.push(userSave);
     }
+    componentDidMount() {
+        const dbRef = firebase.database().ref('/restaurants');
+        dbRef.on('value', (snapshot)=>{
+            let items = snapshot.val();
+            let newState = [];
+            for (let item in items) {
+                newState.push({
+                    id: item,
+                    title: items[item].title,
+                    address: items[item].address
+                });
+            }
+            this.setState({
+                places:newState
+            });
+            console.log(items);
+        });
+    }
+
     onMapClicked(props) {
         if (this.state.showingInfoWindow) {
             this.setState({
@@ -75,9 +96,16 @@ export class MapContainer extends React.Component {
             <div className="infoPane">
               <h5>{this.state.title}</h5>
               <p>{this.state.address}</p>
-              <span>{this.state.rating}</span>
+              {/* <span>{this.state.rating}</span> */}
               <button onClick={this.clickThis}>CLICK CLICK</button>
             </div>
+            <section className="saved">
+                <div className="wrapper">
+                
+
+                </div>
+            </section>
+            
             <Map google={this.props.google} zoom={13} onClick={this.onMapClicked} center={this.props.coords} style={style}>
               {Object.values(this.props.locations).map(
                 (location, i) => {

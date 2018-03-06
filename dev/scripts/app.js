@@ -34,6 +34,7 @@ class App extends React.Component {
         this.submit = this.submit.bind(this);
         this.getCoords = this.getCoords.bind(this);
     }
+
     signIn() {
 
         auth.signInWithPopup(provider)
@@ -42,6 +43,7 @@ class App extends React.Component {
             this.setState ({
                 user
             })
+            console.log(user)
         })
         // const provider = new firebase.auth.GoogleAuthProvider();
 
@@ -108,7 +110,7 @@ class App extends React.Component {
                                 address: eatingPlace.restaurant.location.address,
                                 latitude: eatingPlace.restaurant.location.latitude,
                                 longitude: eatingPlace.restaurant.location.longitude,
-                                rating: eatingPlace.restaurant.user_rating.aggregate_rating
+                                // rating: eatingPlace.restaurant.user_rating.aggregate_rating
                             };
                         });
                         // console.log(newArray);
@@ -140,15 +142,15 @@ class App extends React.Component {
               <img src="./public/images/fullLogo.png" />
             </div>
             <div className="signOut">
-              {this.state.user ? <button className="authButton" onClick={this.signOut}>
-                  Sign Out
-                </button> : <button className="authButton" onClick={this.signIn}>
-                  Sign in
-                </button>}
-            </div>
-            {this.state.user ? <div>
-                <div className="userStuff">
-                  <form onSubmit={this.submit} className="wrapper">
+              {this.state.user ? <div className="clearfix">
+                  <div className="userStuff">
+                    <div className="userPhoto">
+                        <div>
+                            <img src={this.state.user.photoURL} alt="" />
+                        </div>
+                      <span>Welcome, {this.state.user.displayName}!</span>
+                    </div>
+                    {/* <form onSubmit={this.submit} className="wrapper">
                     <label htmlFor="userSearch">City or Address:</label>
                     <input type="text" id="userText" value={this.state.userText} onChange={this.handleChange} />
                     <input type="submit" value="Food Me!" />
@@ -156,10 +158,29 @@ class App extends React.Component {
 
                   <div id="map" className="map">
                     <MapContainer locations={this.state.restaurants} coords={this.state.coordinates} />
-                  </div>    
+                  </div>     */}
+                  </div>
+                </div> : <div className="wrapper">
+                </div>}
+              {this.state.user ? <button className="authButton logOut" onClick={this.signOut}>
+                  Sign Out
+                </button> : 
+                <button className="authButton logIn" onClick={this.signIn}>
+                  Sign in
+                </button>}
+            </div>
+
+            {this.state.user ? <div className="search-thing">
+                <form onSubmit={this.submit} className="wrapper">
+                  <label htmlFor="userSearch">City or Address:</label>
+                  <input type="text" id="userText" value={this.state.userText} onChange={this.handleChange} />
+                  <input type="submit" value="Food Me!" />
+                </form>
+
+                <div id="map" className="map">
+                  <MapContainer locations={this.state.restaurants} coords={this.state.coordinates} />
                 </div>
-              </div> : <div className="wrapper">
-                <p>you must be logged in</p>
+              </div> : <div>
               </div>}
           </div>;
     }
