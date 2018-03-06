@@ -26,13 +26,17 @@ class App extends React.Component {
             restaurants: [],
             coordinates: {},
             username: '',
-            user: null
+            user: null,
+            savedRestaurants: []
         }
         this.signIn = this.signIn.bind(this);
         this.signOut = this.signOut.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.submit = this.submit.bind(this);
         this.getCoords = this.getCoords.bind(this);
+        this.getSavedRestaurants = this.getSavedRestaurants.bind(this);
+        this.getSavedRestaurants();        
+
     }
     signIn() {
 
@@ -69,6 +73,32 @@ class App extends React.Component {
     handleChange(e) {
         this.setState({
             [e.target.id]: e.target.value
+        })
+    }
+    getSavedRestaurants() {
+        const dbRef = firebase.database().ref('/restaurants');
+
+        const restaurantList = [];
+
+        // dbref.on('value', (snapshot) => {
+        //     const data = snapshot.val();
+        //     const state = [];
+        //     for (let key in data) {
+        //         data[key].key = key;
+        //         state.push(data[key]);
+        //     }
+        
+        dbRef.on('value', (response) => {
+            const data = response.val();
+            const state = [];
+            for (let key in data) {
+                data[key].key = key;
+                state.push(data[key]);
+            }
+
+            this.setState({
+                savedRestaurants: state
+            });
         })
     }
     componentDidMount () {
@@ -155,7 +185,7 @@ class App extends React.Component {
                   </form>
 
                   <div id="map" className="map">
-                    <MapContainer locations={this.state.restaurants} coords={this.state.coordinates} />
+                    <MapContainer locations={this.state.restaurants} coords={this.state.coordinates} userHistory={this.state.savedRestaurants} />
                   </div>    
                 </div>
               </div> : <div className="wrapper">
