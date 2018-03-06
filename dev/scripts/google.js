@@ -8,8 +8,8 @@ export class MapContainer extends React.Component {
         super(props);
         this.state = {
             title: '',
-            address: '',
             rating:'',
+            address: '',
             showingInfoWindow: false,
             selectedPlace: {},
             activeMarker: {},
@@ -21,15 +21,15 @@ export class MapContainer extends React.Component {
         this.clickThis = this.clickThis.bind(this);
     }
     componentDidMount() {
-        firebase.auth().onAuthStateChanged((res) => {
-            if(res) {
-                this.setState({
-                    loggedIn: true
-                })
-            } else {
-                loggedIn: false
-            }
-        })
+        // firebase.auth().onAuthStateChanged((res) => {
+        //     if(res) {
+        //         this.setState({
+        //             loggedIn: true
+        //         })
+        //     } else {
+        //         loggedIn: false
+        //     }
+        // })
     }
     markerClick(props, marker) {
         console.log(props);
@@ -45,7 +45,7 @@ export class MapContainer extends React.Component {
  
     }
     clickThis(){
-        
+        console.log('teststestse')
         const userSave = {
             restaurant: this.state.title,
             address: this.state.address,
@@ -71,7 +71,7 @@ export class MapContainer extends React.Component {
             height:'80%'
         }
         // centerAroundCurrentLocation={true} 
-        return <div>
+        return (<div>
             <div className="infoPane">
               <h5>{this.state.title}</h5>
               <p>{this.state.address}</p>
@@ -106,7 +106,8 @@ export class MapContainer extends React.Component {
                 </div>
               </InfoWindow>
             </Map>
-          </div>;
+          </div>
+        )
     }
 }
 

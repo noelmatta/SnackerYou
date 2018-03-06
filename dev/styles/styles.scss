@@ -18,7 +18,10 @@
 
 
 .infoPane {
+    position: absolute;
+    right:15%;
     float:right;
     max-width:400px;
     padding:50px;
+    z-index: 9999999;
 }
