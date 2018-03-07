@@ -94,6 +94,10 @@ console.log(key)
         const dbRef = firebase.database().ref(`restaurants/${key}`)
         dbRef.remove();
     }
+    style() {
+        width: '100%'
+        height: '80%'
+    }
     render(props) {
         const style = {
             width:'70%',
@@ -106,11 +110,11 @@ console.log(key)
                 {this.state.savedRestaurants.map((restaurant) => {
                     console.log(restaurant)
                     return(
-<span key={restaurant.key}>
-                        <h5>{restaurant.restaurant}</h5>
-                        <p>{restaurant.address}</p>
-                        <button value={restaurant.key} onClick={() => this.deleteRestaurant(restaurant.key)}><i class="fas fa-times"></i></button>
-</span>
+                        <span key={restaurant.key}>
+                            <h5>{restaurant.restaurant}</h5>
+                            <p>{restaurant.address}</p>
+                            <button value={restaurant.key} onClick={() => this.deleteRestaurant(restaurant.key)}><i class="fas fa-times"></i></button>
+                        </span>
                         
                     )
                     
@@ -125,7 +129,7 @@ console.log(key)
                 </div>
             </section>
             
-            <Map google={this.props.google} zoom={13} onClick={this.onMapClicked} center={this.props.coords} style={style}>
+            <Map google={this.props.google} zoom={13} onClick={this.onMapClicked} center={this.props.coords} style={{ width: '90%', height: '100%', position: 'relative' }}>
               {Object.values(this.props.locations).map(
                 (location, i) => {
                   return (
